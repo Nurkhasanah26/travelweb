@@ -1,55 +1,27 @@
-<?php
-
-	class User_model extends CI_Model{
-		public function register($enc_password){
-			// User data array
-			$data = array(
-				'fullname' => $this->input->post('fullname'),
-				'email' => $this->input->post('email'),
-                'username' => $this->input->post('username'),
-                'password' => $enc_password,
-                'level' => $this->input->post('level')
-			);
-
-			// Insert user
-			return $this->db->insert('user', $data);
-		}
-
-		// Log user in
-		public function login($username, $password){
-			// Validate
-			$this->db->where('username', $username);
-			$this->db->where('password', $password);
-
-			$result = $this->db->get('user');
-
-			if($result->num_rows() == 1){
-				return $result->row(0)->id;
-			} else {
-				return false;
-			}
-		}
-
-		// Check username exists
-		public function check_username_exists($username){
-			$query = $this->db->get_where('user', array('username' => $username));
-			if(empty($query->row_array())){
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		// Check email exists
-		public function check_email_exists($email){
-			$query = $this->db->get_where('user', array('email' => $email));
-			if(empty($query->row_array())){
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
-
-	/* End of file User_model.php */
-	/* Location: ./application/models/User_model.php */
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<table border="1">
+	<tr>
+		<td>id</td>
+		<td>username</td>
+		<td>password</td>
+		<td>fullname</td>
+		<td>level</td>
+	</tr>
+	<?php foreach ($isi->result() as $key): ?>
+		<tr>
+			<td><?php echo $key->id ?></td>
+			<td><?php echo $key->username ?></td>
+			<td><?php echo $key->password ?></td>
+			<td><?php echo $key->fullname ?></td>
+			<td><?php echo $key->level ?></td>
+			<td><?php echo anchor('usename/hapus/'.$key->id,"Hapus"); ?></td>
+		</tr>
+	<?php endforeach?>
+</table>
+</body>
+</html>
